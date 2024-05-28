@@ -3,6 +3,9 @@ from typing import List
 from datetime import datetime
 from multiprocessing import Pool
 from ..models.models import AdditionRequest, AdditionResponse
+import logging
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -25,7 +28,9 @@ async def addition(request: AdditionRequest):
             "started_at": start_time,
             "completed_at": end_time
         }
+        logger.info(f"Addition request processed successfully. Batch ID: {request.batchid}")
         return AdditionResponse(**response_data)
 
     except Exception as e:
+        logger.info(f"Error while Addition request . Batch ID: {request.batchid}")
         raise HTTPException(status_code=500, detail=str(e))
